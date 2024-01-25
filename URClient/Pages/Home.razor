@@ -1,0 +1,58 @@
+﻿@page "/"
+@using UR_RTDE
+
+
+<PageTitle>Home</PageTitle>
+
+
+<h1>URClient</h1>
+
+<button @onclick="Connect">Connect</button>
+
+<div>X = @x</div>
+<div>Y = @y</div>
+<div>Z = @z</div>
+<div>Rx = @rx</div>
+<div>Ry = @ry</div>
+<div>Rz = @rz</div>
+
+@code {
+    private double x;
+    private double y;
+    private double z;
+    private double rx;
+    private double ry;
+    private double rz;
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    private async Task Connect()
+    {
+        var client = new RTDEClient("192.168.83.129", 30004, 10);
+        client.AddOutput(RTDEOutput.actual_TCP_pose);
+
+        client.OnSendData = () =>
+        {
+            return null;
+        };
+
+        client.OnReceiveData = async values =>
+        {
+            var tcp = (double[])values[0];
+
+            x = tcp[5] * 1000;
+            y = tcp[4] * 1000;
+            z = tcp[3] * 1000;
+            rx = tcp[2];
+            ry = tcp[1];
+            rz = tcp[0];
+
+            await InvokeAsync(() => StateHasChanged());
+
+        };
+
+        await client.StartExchangingDataAsync();
+    }
+}
