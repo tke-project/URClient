@@ -55,7 +55,7 @@
 .nav-item {
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
-    color: cornflowerblue;
+    color: white;
 }
 
     .nav-item:first-of-type {
@@ -68,7 +68,8 @@
 
     .nav-item ::deep a {
         /*color: #d7d7d7;*/
-        color: seagreen;
+
+        color: white;
         border-radius: 4px;
         height: 3rem;
         display: flex;

@@ -14,9 +14,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="UR_RTDE">
-			<HintPath>..\UR_RTDE\bin\Debug\net8.0\UR_RTDE.dll</HintPath>
-		</Reference>
+	  <ProjectReference Include="..\UR_RTDE\UR_RTDE.csproj" />
 	</ItemGroup>
 
 </Project>

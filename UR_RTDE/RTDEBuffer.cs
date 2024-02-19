@@ -73,45 +73,45 @@ namespace UR_RTDE
                 case "VECTOR3D":
                     double[] values =
                     [
-                        BitConverter.ToDouble(buf, 0),
-                        BitConverter.ToDouble(buf, 8),
                         BitConverter.ToDouble(buf, 16),
+                        BitConverter.ToDouble(buf, 8),
+                        BitConverter.ToDouble(buf, 0),
                     ];
                     return values;
 
                 case "VECTOR6D":
                     values =
                    [
-                       BitConverter.ToDouble(buf, 0),
-                       BitConverter.ToDouble(buf, 8),
-                       BitConverter.ToDouble(buf, 16),
-                       BitConverter.ToDouble(buf, 24),
-                       BitConverter.ToDouble(buf, 32),
                        BitConverter.ToDouble(buf, 40),
+                       BitConverter.ToDouble(buf, 32),
+                       BitConverter.ToDouble(buf, 24),
+                       BitConverter.ToDouble(buf, 16),
+                       BitConverter.ToDouble(buf, 8),
+                       BitConverter.ToDouble(buf, 0),
                    ];
                     return values;
 
                 case "VECTOR6INT32":
                     values =
                     [
-                        BitConverter.ToInt32(buf, 0),
-                        BitConverter.ToInt32(buf, 4),
-                        BitConverter.ToInt32(buf, 8),
-                        BitConverter.ToInt32(buf, 12),
-                        BitConverter.ToInt32(buf, 16),
                         BitConverter.ToInt32(buf, 20),
+                        BitConverter.ToInt32(buf, 16),
+                        BitConverter.ToInt32(buf, 12),
+                        BitConverter.ToInt32(buf, 8),
+                        BitConverter.ToInt32(buf, 4),
+                        BitConverter.ToInt32(buf, 0),
                     ];
                     return values;
 
                 case "VECTOR6UINT32":
                     values =
                     [
-                        BitConverter.ToUInt32(buf, 0),
-                        BitConverter.ToUInt32(buf, 4),
-                        BitConverter.ToUInt32(buf, 8),
-                        BitConverter.ToUInt32(buf, 12),
-                        BitConverter.ToUInt32(buf, 16),
                         BitConverter.ToUInt32(buf, 20),
+                        BitConverter.ToUInt32(buf, 16),
+                        BitConverter.ToUInt32(buf, 12),
+                        BitConverter.ToUInt32(buf, 8),
+                        BitConverter.ToUInt32(buf, 4),
+                        BitConverter.ToUInt32(buf, 0),
                     ];
                     return values;
 

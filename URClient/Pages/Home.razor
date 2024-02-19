@@ -1,4 +1,5 @@
-﻿@page "/"
+﻿@inject IJSRuntime JSRuntime
+@page "/"
 @using UR_RTDE
 
 
@@ -7,22 +8,22 @@
 
 <h1>URClient</h1>
 
-<button @onclick="Connect">Connect</button>
+<div class="row">
+    <div class="col col-12">
+        <canvas id="ur_temps"></canvas>.
+    </div>
+    <div class="col col-12">
+        <canvas id="ur_joints"></canvas>
+    </div>
+</div>
 
-<div>X = @x</div>
-<div>Y = @y</div>
-<div>Z = @z</div>
-<div>Rx = @rx</div>
-<div>Ry = @ry</div>
-<div>Rz = @rz</div>
+<InputText class="form-control" @bind-Value="ip"></InputText>
+<button class="btn btn-primary" @onclick="Connect">Connect</button>
 
 @code {
-    private double x;
-    private double y;
-    private double z;
-    private double rx;
-    private double ry;
-    private double rz;
+    private string ip;
+    private double[] temp;
+    private bool isEdited = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -30,8 +31,9 @@
 
     private async Task Connect()
     {
-        var client = new RTDEClient("192.168.83.129", 30004, 10);
-        client.AddOutput(RTDEOutput.actual_TCP_pose);
+        var client = new RTDEClient(ip, 30004, 10);
+        client.AddOutput(RTDEOutput.joint_temperatures);
+        client.AddOutput(RTDEOutput.actual_q);
 
         client.OnSendData = () =>
         {
@@ -40,16 +42,19 @@
 
         client.OnReceiveData = async values =>
         {
-            var tcp = (double[])values[0];
+            var temps = (double[])values[0];
+            var joints = (double[])values[1];
 
-            x = tcp[5] * 1000;
-            y = tcp[4] * 1000;
-            z = tcp[3] * 1000;
-            rx = tcp[2];
-            ry = tcp[1];
-            rz = tcp[0];
+            joints = joints.Select(x => 180 / Math.PI * x).ToArray();
 
-            await InvokeAsync(() => StateHasChanged());
+            await InvokeAsync(
+              async () =>
+              {
+                  await JSRuntime.InvokeVoidAsync("refreshCharts", temps, joints);
+                  StateHasChanged();
+                  isEdited = true;
+              }
+            );
 
         };
 
